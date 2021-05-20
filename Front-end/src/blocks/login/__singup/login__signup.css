@@ -1,0 +1,13 @@
+.login__signup {
+    all: unset;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: right;
+    color: white;
+    cursor: pointer;
+    margin-top: 6px;
+}
+.login__signup:hover {
+    opacity: 0.6;
+}

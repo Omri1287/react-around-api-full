@@ -1,0 +1,25 @@
+.modal__save {
+    background: black;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    margin-top: 18px;
+    color: #ffffff;
+    width: 358px;
+    height: 50px;
+    border-radius: 2px;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
+.modal__save:hover {
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 700px) {
+    .modal__save {
+        max-width: 100%;
+        max-height: 100%;
+    }
+}

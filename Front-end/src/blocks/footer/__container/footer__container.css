@@ -1,0 +1,10 @@
+.footer__container {
+    max-width: 882px;
+    height: 100%;
+    margin: auto;
+}
+@media screen and (max-width: 320px) {
+    .footer__container {
+        max-width: 100%;
+    }
+}

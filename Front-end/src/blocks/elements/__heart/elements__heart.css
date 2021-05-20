@@ -1,0 +1,21 @@
+@import url("./_active/elements__heart_active.css");
+
+.elements__heart {
+    color: #000000;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-image: url(../../../images/heart.svg);
+    background-repeat: no-repeat;
+    background-color: white;
+    border: none;
+    width: 21px;
+
+    display: flex;
+    justify-self: flex-end;
+    width: 20.76px;
+    height: 18.13px;
+    padding: 0;
+}
+.elements__heart:hover {
+    opacity: 0.5;
+}

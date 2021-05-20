@@ -1,0 +1,21 @@
+.profile__text_desc {
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 22px;
+    margin-top: 16px;
+}
+
+@media screen and (max-width: 650px) {
+    .profile__text_desc {
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 17px;
+    }
+}
+
+@media screen and (max-width: 300px) {
+    .profile__text_desc {
+        margin-top: 14px;
+        margin-bottom: 36px;
+    }
+}

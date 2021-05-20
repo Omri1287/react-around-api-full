@@ -1,0 +1,16 @@
+@import url("./__title/elements__title.css");
+@import url("./__item/elements__item.css");
+@import url("./__image/elements__image.css");
+@import url("./__heart/elements__heart.css");
+@import url("./__container/elements__container.css");
+@import url("./__item/_delete/elements__item_delete.css");
+@import url("./__image-container/elements__image-container.css");
+@import url("./__heart/_active/elements__heart_active.css");
+@import url("./__list/elements__list.css");
+@import url("./__heart-count/elements__heart-count.css");
+@import url("./__heart-container/elements__heart-container.css");
+
+.elements {
+    display: flex;
+    align-items: center;
+}

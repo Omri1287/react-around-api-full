@@ -1,0 +1,9 @@
+.elements__heart_active {
+    opacity: 1;
+    background-image: url(../../../../images/heart-filled.svg);
+    background-repeat: no-repeat;
+    color: #000000;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-position: center;
+}

@@ -1,0 +1,18 @@
+@import url(./__text/footer__text.css);
+@import url(./__container/footer__container.css);
+
+.footer {
+    padding-top: 66px;
+    padding-bottom: 60px;
+    font-size: 18px;
+    line-height: 22px;
+    color: #545454;
+    width: 100%;
+    margin: 0 auto;
+}
+@media screen and (max-width: 320px) {
+    .footer {
+        padding-top: 48px;
+        padding-bottom: 36px;
+    }
+}

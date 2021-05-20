@@ -1,0 +1,15 @@
+.modal__caption {
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: #ffffff;
+    text-align: left;
+    padding: 10px 0;
+    background-color: transparent;
+    margin-top: 10px;
+}
+@media screen and (max-width: 400px) {
+    .modal__caption {
+        margin-left: 40px;
+    }
+}

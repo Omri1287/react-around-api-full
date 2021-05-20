@@ -1,0 +1,14 @@
+.elements__item {
+    max-width: 282px;
+    height: 361px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 0;
+    position: relative;
+}
+
+@media screen and (max-width: 780px) {
+    .elements__item {
+        max-width: 100%;
+    }
+}
