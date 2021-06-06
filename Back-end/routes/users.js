@@ -1,14 +1,38 @@
 const express = require('express');
 const router = express.Router();
+const userRouter = express.Router();
+const {celebrate, Joi } = require('celebrate');
 
-const {getOneUser, getUsers, createUser, updateUser, updateAvatar} = require('../controllers/userController')
+const {getOneUser, getUsers, createUser, getCurrentUser, updateUser, updateAvatar} = require('../controllers/userController')
 
 
-router.get('/users', getUsers)
-router.get('/users/:id', getOneUser)
-router.post('/users', createUser)
-router.patch('/users/:id', updateUser)
-router.patch('/:id/avatar', updateAvatar)
+userRouter.get('/', getUsers);
+userRouter.get('/me', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+  }),
+}), getCurrentUser);
 
-module.exports = router;
-//
+userRouter.patch('/me', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    about: Joi.string().required().min(2).max(30),
+  }),
+}), updateUser);
+
+userRouter.patch('/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().required().uri(),
+  }),
+}), updateAvatar);
+
+userRouter.get('/:_id', celebrate({
+  params: Joi.object().keys({
+    _id: Joi.string().hex().length(24).required(),
+  }),
+}),  getOneUser);
+userRouter.post('/', createUser);
+
+
+
+module.exports = userRouter;

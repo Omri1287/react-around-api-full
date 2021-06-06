@@ -6,6 +6,7 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 
 function getUsers(req, res){
@@ -33,6 +34,16 @@ function getOneUser(req, res){
       });
 }
 
+function getCurrentUser(req, res, next) {
+  User.findById(req.user._id)
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError("User not found");
+      }
+      res.send({ data: user });
+    })
+    .catch(next);
+}
 function createUser(req,res){
   const { name, about, avatar, email, password } = req.body;
   if (!password || !email) {
@@ -54,6 +65,29 @@ function createUser(req,res){
       }
     })
 }
+
+const login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError("Incorrect password or email");
+      }
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'development', {
+        expiresIn: "7d",
+      });
+      res.send({ token });
+    })
+    .catch(() => {
+      if(res.status(401))
+
+      throw new UnauthorizedError('Incorrect email or password');
+    })
+
+    .catch(next);
+};
+
 function updateUser(req,res){
   const { name, about } = req.body;
   return User.findByIdAndUpdate( req.params.id,
@@ -88,5 +122,7 @@ module.exports = {
     getUsers,
     createUser,
     updateUser,
-    updateAvatar
+    updateAvatar,
+    login,
+    getCurrentUser
 }

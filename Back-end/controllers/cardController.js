@@ -13,26 +13,25 @@ function getCards(req, res){
         .then((cards) => {
             res.status(200).send(cards);
         })
-        .catch()
+        .catch(next)
 }
 
 function deleteCard(req, res){
     Card.findByIdAndRemove(req.params.cardId)
       .then((card) => {
         if (!card) {
-          return res.status(404).send({ message: "Card Not Found" });
-        }else{
-          return res.status(403).send({ message: "not allowed" })
-        }
+          throw new BadRequestError('Invalid data for creating card');
+          }   
         res.status(200).send({ message: "Deleted Succesfully" });
       })
-      .catch((err) => {
-        if (err.name === "ValidationError") {
-          return res.status(500).send({ message: "Internal Server Error" });
-        } else {
-          return res.status(400).send({message: "This is not the card you are looking for"});
-        }
-      })
+      .catch(next)
+      // .catch((err) => {
+      //   if (err.name === "ValidationError") {
+      //     return res.status(500).send({ message: "Internal Server Error" });
+      //   } else {
+      //     return res.status(400).send({message: "This is not the card you are looking for"});
+      //   }
+      // })
 
 }
 
@@ -60,16 +59,16 @@ const likeCard = (req, res) => {
   .then((card) => {
     if (card) {
       return res.status(200).send(card);
-    }else{
-      return res.status(404).send({ message: 'Card not found to like' })
     }
+    throw new BadRequestError('This card is already liked' );
   })
-  .catch((err) => {
-    if (err.name === "CastError") {
-      return res.status(400).send({message: "This is not the card you are looking for"});
-    }
-    return res.status(500).send({ message: "Internal Server Error" });
-  });
+  .catch(next)
+  // .catch((err) => {
+  //   if (err.name === "CastError") {
+  //     return res.status(400).send({message: "This is not the card you are looking for"});
+  //   }
+  //   return res.status(500).send({ message: "Internal Server Error" });
+  // });
 };
 
 const dislikeCard = (req, res) => {
@@ -79,16 +78,16 @@ const dislikeCard = (req, res) => {
   .then((card) => {
     if (card) {
       return res.status(200).send(card);
-    }else{
-      return res.status(404).send({ message: 'Card not found to dislike' })
     }
+    throw new BadRequestError('This card is already liked' );
   })
-  .catch((err) => {
-    if (err.name === "CastError") {
-      return res.status(400).send({message: "This is not the card you are looking for"});
-    }
-    return res.status(500).send({ message: "Internal Server Error" });
-  });
+  .catch(next)
+  // .catch((err) => {
+  //   if (err.name === "CastError") {
+  //     return res.status(400).send({message: "This is not the card you are looking for"});
+  //   }
+  //   return res.status(500).send({ message: "Internal Server Error" });
+  // });
 }
 
 module.exports = {
