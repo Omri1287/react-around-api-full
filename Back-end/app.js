@@ -23,10 +23,6 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
   useUnifiedTopology: true,
 });
 
-const userRouter = require('./routes/users')
-const cardRouter = require('./routes/cards')
-
-
 // listen to port 3000
 const { PORT = 3000 } = process.env;
 
