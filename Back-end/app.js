@@ -4,7 +4,7 @@ const app = express();
 const  mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
-const { requestLogger, errorLogger } = require('./middlewares/loggers'); 
+const { requestLogger, errorLogger } = require('./middleware/loggers'); 
 
 
 //const helmet = require('helmet');
