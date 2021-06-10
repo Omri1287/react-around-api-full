@@ -1,10 +1,15 @@
 const express = require('express');
 const app = express();
-//const path = require('path')
+const userRouter = require("./routers/users");
+const cardRouter = require("./routers/cards");
 const  mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middleware/loggers'); 
+const { login, createUser } = require('./controllers/userController')
+const cors = require('cors')
+const auth = require('./middleware/auth');
+const helmet = require("helmet");
 
 
 //const helmet = require('helmet');
@@ -18,8 +23,8 @@ mongoose.connect('mongodb://localhost:27017/aroundb', {
   useUnifiedTopology: true,
 });
 
-const usersRouter = require('./routes/users')
-const cardsRouter = require('./routes/cards')
+const userRouter = require('./routes/users')
+const cardRouter = require('./routes/cards')
 
 
 // listen to port 3000
@@ -30,12 +35,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //app.use(express.static(path.join(__dirname, 'public' )))
 
 app.use(requestLogger); // enabling the request logger
+app.use(cors());
+app.use(helmet());
 
+app.use(auth)
 // followed by all route handlers
 app.post('/signup', createUser);
 app.post('/signin', login);
-app.use('/users', usersRouter);
-app.post('/posts', postsRouter); 
+app.use('/users', userRouter);
+app.post('/cards', cardRouter); 
 
 app.use(errors());
 
@@ -43,6 +51,7 @@ app.get('*', (req, res) => {
   res.status(404).send({ message: "Page not found" });
 })
 
+app.use(errorLogger);
 
 app.listen(PORT, () => {
   // if everything works fine, the console will show which port the application is listening to
