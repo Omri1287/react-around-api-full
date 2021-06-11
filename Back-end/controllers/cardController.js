@@ -3,7 +3,8 @@
 //const pathtoCards = path.join(__dirname,'..', 'data', 'cards.json')
 //const getFilecContent = require('../helpers/getFilecContent')//
 
-
+const BadRequestError = require('../middleware/errors/BadRequestError');
+const NotFoundError = require("../middleware/errors/NotFoundError");
 const Card = require("../models/card");
 
 
@@ -20,8 +21,8 @@ function deleteCard(req, res){
     Card.findByIdAndRemove(req.params.cardId)
       .then((card) => {
         if (!card) {
-          throw new BadRequestError('Invalid data for creating card');
-          }   
+          throw new NotFoundError("This is not the card you are looking for");
+        }
         res.status(200).send({ message: "Deleted Succesfully" });
       })
       .catch(next)
@@ -35,7 +36,7 @@ function deleteCard(req, res){
 
 }
 
-function createCard(req,res){
+function createCard(req,res, next){
   const { name, link } = req.body;
   Card.create({
     name,
@@ -43,16 +44,14 @@ function createCard(req,res){
     owner: req.user._id,
   })
   .then((card) => {
-      res.status(200).send(card)})
-  .catch((err) => {
-    if (err.name === "CastError") {
-      return res.status(500).send({ message: "Internal Server Error" });
-    } else {
-      return res.status(400).send({message: "Cannot create the card"});
+    if (!card){
+      throw new BadRequestError('Invalid data for creating card');
     }
+    res.status(200).send(card)
   })
+  .catch(next);
 }
-const likeCard = (req, res) => {
+const likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(req.params.cardId,
     { $addToSet: { likes: req.user._id } },
     { new: true })
@@ -71,7 +70,7 @@ const likeCard = (req, res) => {
   // });
 };
 
-const dislikeCard = (req, res) => {
+const dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate( req.params.cardId,
     { $pull: { likes: req.user._id } }, // remove _id from the array
     { new: true })

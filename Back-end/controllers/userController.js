@@ -5,6 +5,9 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const NotFoundError = require("../middleware/errors/NotFoundError");
+const BadRequestError = require("../middleware/errors/BadRequestError");
+const UnauthorizedError = require('../middleware/errors/UnauthorizedError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -20,18 +23,18 @@ function getUsers(req, res){
 function getOneUser(req, res){
     return User.findById({_id: req.params.id})
       .then((user) => {
-        if (user) {
-          return res.status(200).send(user);
-        }else{
-          return res.status(404).send({ message: 'User ID not found' })
+        if (!user) {
+          throw new NotFoundError("This is not the user you are looking for");
         }
+        res.status(200).send(user);
       })
-      .catch((err) => {
-        if (err.name === "CastError") {
-          return res.status(400).send({message: "This is not the card you are looking for"});
+      .catch(() =>{
+        if (res.status(400)){
+          throw new BadRequestError('Invalid User');
         }
-        return res.status(500).send({ message: "Internal Server Error" });
-      });
+  
+      })
+      .catch(next);
 }
 
 function getCurrentUser(req, res, next) {
