@@ -17,25 +17,6 @@ function getCards(req, res){
         .catch(next)
 }
 
-function deleteCard(req, res){
-    Card.findByIdAndRemove(req.params.cardId)
-      .then((card) => {
-        if (!card) {
-          throw new NotFoundError("This is not the card you are looking for");
-        }
-        res.status(200).send({ message: "Deleted Succesfully" });
-      })
-      .catch(next)
-      // .catch((err) => {
-      //   if (err.name === "ValidationError") {
-      //     return res.status(500).send({ message: "Internal Server Error" });
-      //   } else {
-      //     return res.status(400).send({message: "This is not the card you are looking for"});
-      //   }
-      // })
-
-}
-
 function createCard(req,res, next){
   const { name, link } = req.body;
   Card.create({
@@ -50,6 +31,25 @@ function createCard(req,res, next){
     res.status(200).send(card)
   })
   .catch(next);
+}
+
+function deleteCard(req, res){
+  Card.findByIdAndRemove(req.params.cardId)
+    .then((card) => {
+      if (!card) {
+        throw new NotFoundError("This is not the card you are looking for");
+      }
+      res.status(200).send({ message: "Deleted Succesfully" });
+    })
+    .catch(next)
+    // .catch((err) => {
+    //   if (err.name === "ValidationError") {
+    //     return res.status(500).send({ message: "Internal Server Error" });
+    //   } else {
+    //     return res.status(400).send({message: "This is not the card you are looking for"});
+    //   }
+    // })
+
 }
 const likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(req.params.cardId,

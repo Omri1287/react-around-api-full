@@ -10,6 +10,8 @@ const { login, createUser } = require('./controllers/userController')
 const cors = require('cors')
 const auth = require('./middleware/auth');
 const helmet = require("helmet");
+const NotFoundError = require("./middleware/errors/NotFoundError");
+
 
 
 //const helmet = require('helmet');
@@ -44,7 +46,7 @@ app.post('/cards', cardRouter);
 app.use(errors());
 
 app.get('*', (req, res) => {
-  res.status(404).send({ message: "Page not found" });
+  throw new NotFoundError('Requested resource not found.')
 })
 
 app.use(errorLogger);
