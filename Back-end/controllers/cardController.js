@@ -5,6 +5,7 @@
 
 const BadRequestError = require('../middleware/errors/BadRequestError');
 const NotFoundError = require("../middleware/errors/NotFoundError");
+const UnauthorizedError = require('../middleware/errors/UnauthorizedError');
 const Card = require("../models/card");
 
 
@@ -35,13 +36,16 @@ function createCard(req,res, next){
 
 function deleteCard(req, res){
   Card.findByIdAndRemove(req.params.cardId)
-    .then((card) => {
-      if (!card) {
-        throw new NotFoundError("This is not the card you are looking for");
-      }
-      res.status(200).send({ message: "Deleted Succesfully" });
-    })
-    .catch(next)
+  .then((card) => {
+    if (!card) {
+      throw new NotFoundError('The requested card was not found');
+    }
+    if (card.owner !== req.user._id) {
+      throw new UnauthorizedError('You are not authorized to delete this card');
+    }
+    res.send(card);
+  })
+  .catch(next);
     // .catch((err) => {
     //   if (err.name === "ValidationError") {
     //     return res.status(500).send({ message: "Internal Server Error" });

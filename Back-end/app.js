@@ -36,10 +36,10 @@ app.use(requestLogger); // enabling the request logger
 app.use(cors());
 app.use(helmet());
 
-app.use(auth)
 // followed by all route handlers
 app.post('/signup', createUser);
 app.post('/signin', login);
+app.use(auth)
 app.use('/users', userRouter);
 app.post('/cards', cardRouter); 
 
