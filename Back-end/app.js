@@ -10,6 +10,8 @@ const { login, createUser } = require('./controllers/userController')
 const cors = require('cors')
 const auth = require('./middleware/auth');
 const helmet = require("helmet");
+const {celebrate} = require('celebrate');
+const Joi = require('joi'); 
 const NotFoundError = require("./middleware/errors/NotFoundError");
 
 
@@ -37,8 +39,31 @@ app.use(cors());
 app.use(helmet());
 
 // followed by all route handlers
-app.post('/signup', createUser);
-app.post('/signin', login);
+
+app.post(
+  '/signup',
+  celebrate({
+    body: Joi.object().keys({
+      name: Joi.string().min(2).max(30).pattern(new RegExp('^[a-zA-Z-\\s]*$')),
+      about: Joi.string().min(2).max(30),
+      avatar: Joi.string().uri(),
+      email: Joi.string().required().email(),
+      password: Joi.string().min(8).alphanum().required(),
+    }),
+  }),
+  createUser
+);
+
+app.post(
+  '/signin',
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+    }),
+  }),
+  login
+);
 app.use(auth)
 app.use('/users', userRouter);
 app.post('/cards', cardRouter); 

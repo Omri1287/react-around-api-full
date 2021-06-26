@@ -1,8 +1,9 @@
 const express = require('express');
-const {Joi, celebrate} = require('celebrate');
+const {celebrate} = require('celebrate');
 const router = express.Router();
 const cardRouter = express.Router();
 const validator = require("validator");
+const Joi = require('joi'); 
 
 const {getCards} = require('../controllers/cardController')
 const {deleteCard} = require('../controllers/cardController')
@@ -16,7 +17,14 @@ cardRouter.get('/', getCards);
 cardRouter.post('/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required()
+    link: Joi.string().required().custom((v) => {
+      if (validator.isURL){
+        return v;
+      }
+      else {
+        throw new Error("invalid link")
+      }
+    }),
   }),
 }), createCard);
 

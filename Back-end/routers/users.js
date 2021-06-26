@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const userRouter = express.Router();
-const {Joi, celebrate} = require('celebrate');
+const {celebrate} = require('celebrate');
 const validator = require("validator");
+const Joi = require('joi'); 
 
 const {getOneUser, getUsers, createUser, getCurrentUser, updateUser, updateAvatar} = require('../controllers/userController')
 
@@ -23,11 +24,15 @@ userRouter.patch('/me', celebrate({
 
 userRouter.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required(),
-    validate: {
-      validator: (v) => validator.isURL(v, [{ allow_underscores: true }]),
-    },
-  }),
+    avatar: Joi.string().required().custom((v) => {
+      if (validator.isURL){
+        return v;
+      }
+      else {
+        throw new Error("invalid link")
+      }
+    }),
+  })
 }), updateAvatar);
 
 userRouter.get('/:_id', celebrate({
