@@ -27,6 +27,7 @@ cardRouter.post('/', celebrate({
     }),
   }),
 }), createCard);
+//check
 
 cardRouter.delete('/:cardId', celebrate({
   params: Joi.object().keys({
