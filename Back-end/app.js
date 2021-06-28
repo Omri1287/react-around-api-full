@@ -7,17 +7,14 @@ const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middleware/loggers'); 
 const { login, createUser } = require('./controllers/userController')
-const cors = require('cors')
+const cors = require('cors');
 const auth = require('./middleware/auth');
 const helmet = require("helmet");
 const {celebrate} = require('celebrate');
 const Joi = require('joi'); 
+const validator = require("validator");
 const NotFoundError = require("./middleware/errors/NotFoundError");
-
-
-
-//const helmet = require('helmet');
-
+require("dotenv").config();
 
 // connect to the MongoDB server
 mongoose.connect('mongodb://localhost:27017/aroundb', {
@@ -46,7 +43,7 @@ app.post(
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30).pattern(new RegExp('^[a-zA-Z-\\s]*$')),
       about: Joi.string().min(2).max(30),
-      avatar: JJoi.string().required().custom((v) => {
+      avatar: Joi.string().required().custom((v) => {
         if (validator.isURL){
           return v;
         }
