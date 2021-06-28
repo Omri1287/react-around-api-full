@@ -14,7 +14,6 @@ const {celebrate} = require('celebrate');
 const Joi = require('joi'); 
 const validator = require("validator");
 const NotFoundError = require("./middleware/errors/NotFoundError");
-require("dotenv").config();
 
 // connect to the MongoDB server
 mongoose.connect('mongodb://localhost:27017/aroundb', {

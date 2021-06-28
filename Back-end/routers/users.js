@@ -42,6 +42,4 @@ userRouter.get('/:_id', celebrate({
 }),  getOneUser);
 userRouter.post('/', createUser);
 
-
-
 module.exports = userRouter;
