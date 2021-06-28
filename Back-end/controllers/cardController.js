@@ -40,7 +40,7 @@ function deleteCard(req, res){
     if (!card) {
       throw new NotFoundError('The requested card was not found');
     }
-    if (card.owner !== req.user._id) {
+    if (eq.user._id.toString() !== card.owner.toString()) {
       throw new UnauthorizedError('You are not authorized to delete this card');
     }
     res.send(card);

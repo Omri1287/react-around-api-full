@@ -46,7 +46,14 @@ app.post(
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30).pattern(new RegExp('^[a-zA-Z-\\s]*$')),
       about: Joi.string().min(2).max(30),
-      avatar: Joi.string().uri(),
+      avatar: JJoi.string().required().custom((v) => {
+        if (validator.isURL){
+          return v;
+        }
+        else {
+          throw new Error("invalid link")
+        }
+      }),
       email: Joi.string().required().email(),
       password: Joi.string().min(8).alphanum().required(),
     }),
