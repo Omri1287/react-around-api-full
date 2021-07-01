@@ -42,7 +42,7 @@ app.post(
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30).pattern(new RegExp('^[a-zA-Z-\\s]*$')),
       about: Joi.string().min(2).max(30),
-      avatar: Joi.string().required().custom((v) => {
+      avatar: Joi.string().custom((v) => {
         if (validator.isURL){
           return v;
         }
